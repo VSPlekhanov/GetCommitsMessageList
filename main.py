@@ -7,9 +7,12 @@ def run(matched, count):
     request_url = f'https://api.github.com/repos/{matched.group(4)}/{matched.group(5)}' \
                   f'/commits?per_page={count}'
     response = requests.get(request_url).json()
-    for i in range(len(response)):
-        print(i + 1, ':', f'"{response[i].get("commit").get("message")}"\n')
-    print(f'Total {len(response)} commits')
+    if type(response) is type(dict()):
+        print('\n', response)
+    else:
+        for i in range(len(response)):
+            print('\n', i + 1, ':', f'\n"{response[i].get("commit").get("message")}"')
+        print(f'\nTotal {len(response)} commits\n')
 
 
 if __name__ == '__main__':
@@ -18,7 +21,7 @@ if __name__ == '__main__':
                         help='show n last commits (default: 10, max: 100)')
     args = parser.parse_args()
     while True:
-        url = input('\nInput github url: \t\t\t\t\t\t\t\t (type "exit" to close the program)\n\t')
+        url = input('\nInput github url: \t\t\t\t\t\t\t\t (type "exit" to close the program)\n\n')
         if url == 'exit':
             exit(0)
 
